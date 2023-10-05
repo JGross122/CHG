@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0; /* Set the background color to gray */
+        }
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        .text {
+            font-family: 'Roboto', sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            transition: color 1s, transform 2s;
+        }
+        .orange {
+            color: orange;
+        }
+        .black {
+            color: black;
+        }
+        .center-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1; /* Set z-index to place the logo behind the texts */
+            animation: blink 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text orange" style="top: 25%; left: 35%;">Chrobry to jest potęga!</div>
+        <div class="text black" style="top: 60%; left: 65%;">Chrobry to jest potęga!</div>
+        <div class="text orange" style="top: 40%; left: 60%;">Chrobry to jest potęga!</div>
+        <div class="text black" style="top: 35%; left: 40%;">Chrobry to jest potęga!</div>
+        <div class="text orange" style="top: 30%; left: 50%;">Chrobry to jest potęga!</div>
+        <div class="text black" style="top: 70%; left: 50%;">Chrobry to jest potęga!</div>
+        <div class="text orange" style="top: 50%; left: 30%;">Chrobry to jest potęga!</div>
+        <div class="text black" style="top: 45%; left: 70%;">Chrobry to jest potęga!</div>
+
+        <!-- Logo -->
+        <img class="center-logo" src="https://upload.wikimedia.org/wikipedia/en/b/b5/Chrobry_G%C5%82og%C3%B3w_logo.png" alt="Chrobry Głogów Logo">
+    </div>
+    <script>
+        const texts = document.querySelectorAll('.text');
+        let orangeIndices = [];
+        let blackIndices = [];
+
+        // Initialize random colors and positions for 4 text elements
+        for (let i = 0; i < 4; i++) {
+            const index = Math.floor(Math.random() * texts.length);
+            if (!orangeIndices.includes(index)) {
+                texts[index].classList.add('orange');
+                orangeIndices.push(index);
+                moveText(texts[index]);
+            } else {
+                i--;
+            }
+        }
+
+        texts.forEach((text, index) => {
+            if (!text.classList.contains('orange')) {
+                text.classList.add('black');
+                blackIndices.push(index);
+                moveText(text);
+            }
+        });
+
+        setInterval(() => {
+            orangeIndices.forEach((index) => {
+                texts[index].classList.remove('orange');
+                texts[index].classList.add('black');
+            });
+
+            blackIndices.forEach((index) => {
+                texts[index].classList.remove('black');
+                texts[index].classList.add('orange');
+            });
+
+            // Swap the indices
+            const temp = orangeIndices;
+            orangeIndices = blackIndices;
+            blackIndices = temp;
+
+            // Move text elements while changing colors
+            texts.forEach((text) => {
+                moveText(text);
+            });
+        }, 800); // Move 0.1 times faster (every 1 second instead of 2 seconds)
+
+        function moveText(text) {
+            const maxMoveX = 20; // Maximum horizontal movement (in pixels)
+            const maxMoveY = 20; // Maximum vertical movement (in pixels)
+
+            // Randomly move text elements within the limited range
+            const moveX = (Math.random() * maxMoveX * 2 - maxMoveX) * 1.5;
+            const moveY = (Math.random() * maxMoveY * 2 - maxMoveY) * 1.5;
+
+            text.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        }
+    </script>
+</body>
+</html>
